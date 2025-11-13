@@ -1,0 +1,9 @@
+//----------------------------------------------------------------------------------------------------------------------
+// Handholding Shader IK - Fake Arm
+_EnableFakeArm ("Enable Fake arm (for gesture animation)", Float) = 1
+_BoneLength ("Length of a bone", Float) = 2000
+_ExtraForearmLength ("Addition length of forearm and hand", Float) = 500
+_ExtraGrabRatio ("Ratio of extra reach toward light", Float) = 0.5
+_ShaderIKTargetLightIntensity ("Shader IK Target light intensity", Float) = 0.1234
+_VertexScale ("Mesh vertex scale. Editor script uses 1024", Float) = 1024
+[IntRange] _IsLeftArm ("Is left arm", Range(0, 1)) = 0

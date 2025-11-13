@@ -1,0 +1,22 @@
+Shader "*LIL_SHADER_NAME*/lilToon"
+{
+    Properties
+    {
+        lilProperties "Default"
+        lilProperties "DefaultOpaque"
+        lilProperties "lilCustomShaderProperties.lilblock"
+    }
+
+    HLSLINCLUDE
+    ENDHLSL
+
+    lilSubShaderTags {"RenderType" = "Opaque" "Queue" = "Geometry"}
+
+    lilSubShaderInsert "lilCustomShaderInsert.lilblock"
+
+    lilSubShaderBRP "Default"
+    lilSubShaderURP "Default"
+    lilSubShaderHDRP "Default"
+
+    CustomEditor "*LIL_EDITOR_NAME*"
+}
