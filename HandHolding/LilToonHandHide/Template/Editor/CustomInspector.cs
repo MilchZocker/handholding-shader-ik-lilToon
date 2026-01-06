@@ -1,50 +1,65 @@
 #if UNITY_EDITOR
-
 using UnityEditor;
 using UnityEngine;
 
 namespace lilToon
 {
-    public class HideArmInspector : lilToonInspector
+    public class LilToonHandHideInspector : lilToonInspector
     {
-        // Custom properties
+        // Custom properties - Handholding Shader IK (Arm Hide)
         MaterialProperty enableFakeArm;
         MaterialProperty enableFakeLeftArm;
-        
+
         private static bool isShowCustomProperties;
-        private const string shaderName = "lilToonHideArm";
-        
+        private const string shaderName = "LilToonHandHide";
+
         protected override void LoadCustomProperties(MaterialProperty[] props, Material material)
         {
             isCustomShader = true;
+
+            // If you want to change rendering modes in the editor, specify the shader here
             ReplaceToCustomShaders();
-            isShowRenderMode = true; // Enable render mode for cutout
-            
+            isShowRenderMode = !material.shader.name.Contains("Optional");
+
+            // If not, set isShowRenderMode to false
+            //isShowRenderMode = false;
+
+            //LoadCustomLanguage("");
             enableFakeArm = FindProperty("_EnableFakeArm", props);
             enableFakeLeftArm = FindProperty("_EnableFakeLeftArm", props);
         }
-        
+
         protected override void DrawCustomProperties(Material material)
         {
-            isShowCustomProperties = Foldout("Handholding Shader IK - Hide Arm", "Handholding Shader IK - Hide Arm", isShowCustomProperties);
+            // GUIStyles Name   Description
+            // ---------------- ------------------------------------
+            // boxOuter         outer box
+            // boxInnerHalf     inner box
+            // boxInner         inner box without label
+            // customBox        box (similar to unity default box)
+            // customToggleFont label for box
+
+            isShowCustomProperties = Foldout("Handholding Shader IK - Arm Hide", "Handholding Shader IK - Arm Hide", isShowCustomProperties);
             if(isShowCustomProperties)
             {
                 EditorGUILayout.BeginVertical(boxOuter);
-                EditorGUILayout.LabelField("Handholding Shader IK - Hide Arm", customToggleFont);
+                EditorGUILayout.LabelField("Handholding Shader IK - Arm Hide", customToggleFont);
                 EditorGUILayout.BeginVertical(boxInnerHalf);
+
+                m_MaterialEditor.ShaderProperty(enableFakeArm, "Enable Fake Right Arm");
+                m_MaterialEditor.ShaderProperty(enableFakeLeftArm, "Enable Fake Left Arm");
                 
-                EditorGUILayout.HelpBox("This shader uses Cutout mode to hide the arm. Make sure Cutout is set to 0.5 or less.", MessageType.Info);
-                
-                if (enableFakeArm != null)
-                    m_MaterialEditor.ShaderProperty(enableFakeArm, "Enable Fake Right Arm");
-                if (enableFakeLeftArm != null)
-                    m_MaterialEditor.ShaderProperty(enableFakeLeftArm, "Enable Fake Left Arm");
-                    
+                EditorGUILayout.Space();
+                EditorGUILayout.HelpBox("Enable the fake arm to hide the real arm geometry based on vertex colors.\n\n" +
+                    "Right Arm: Hides vertices where green=0 and blue=0\n" +
+                    "Left Arm: Hides vertices where red=0 and green=0\n\n" +
+                    "Use this with gesture animations to toggle handholding on/off.", MessageType.Info);
+
                 EditorGUILayout.EndVertical();
                 EditorGUILayout.EndVertical();
             }
         }
-        
+
         protected override void ReplaceToCustomShaders()
         {
             lts         = Shader.Find(shaderName + "/lilToon");
@@ -52,24 +67,80 @@ namespace lilToon
             ltst        = Shader.Find("Hidden/" + shaderName + "/Transparent");
             ltsot       = Shader.Find("Hidden/" + shaderName + "/OnePassTransparent");
             ltstt       = Shader.Find("Hidden/" + shaderName + "/TwoPassTransparent");
+
             ltso        = Shader.Find("Hidden/" + shaderName + "/OpaqueOutline");
             ltsco       = Shader.Find("Hidden/" + shaderName + "/CutoutOutline");
             ltsto       = Shader.Find("Hidden/" + shaderName + "/TransparentOutline");
             ltsoto      = Shader.Find("Hidden/" + shaderName + "/OnePassTransparentOutline");
             ltstto      = Shader.Find("Hidden/" + shaderName + "/TwoPassTransparentOutline");
-            
+
+            ltsoo       = Shader.Find(shaderName + "/[Optional] OutlineOnly/Opaque");
+            ltscoo      = Shader.Find(shaderName + "/[Optional] OutlineOnly/Cutout");
+            ltstoo      = Shader.Find(shaderName + "/[Optional] OutlineOnly/Transparent");
+
+            ltstess     = Shader.Find("Hidden/" + shaderName + "/Tessellation/Opaque");
+            ltstessc    = Shader.Find("Hidden/" + shaderName + "/Tessellation/Cutout");
+            ltstesst    = Shader.Find("Hidden/" + shaderName + "/Tessellation/Transparent");
+            ltstessot   = Shader.Find("Hidden/" + shaderName + "/Tessellation/OnePassTransparent");
+            ltstesstt   = Shader.Find("Hidden/" + shaderName + "/Tessellation/TwoPassTransparent");
+
+            ltstesso    = Shader.Find("Hidden/" + shaderName + "/Tessellation/OpaqueOutline");
+            ltstessco   = Shader.Find("Hidden/" + shaderName + "/Tessellation/CutoutOutline");
+            ltstessto   = Shader.Find("Hidden/" + shaderName + "/Tessellation/TransparentOutline");
+            ltstessoto  = Shader.Find("Hidden/" + shaderName + "/Tessellation/OnePassTransparentOutline");
+            ltstesstto  = Shader.Find("Hidden/" + shaderName + "/Tessellation/TwoPassTransparentOutline");
+
             ltsl        = Shader.Find(shaderName + "/lilToonLite");
             ltslc       = Shader.Find("Hidden/" + shaderName + "/Lite/Cutout");
             ltslt       = Shader.Find("Hidden/" + shaderName + "/Lite/Transparent");
             ltslot      = Shader.Find("Hidden/" + shaderName + "/Lite/OnePassTransparent");
             ltsltt      = Shader.Find("Hidden/" + shaderName + "/Lite/TwoPassTransparent");
+
             ltslo       = Shader.Find("Hidden/" + shaderName + "/Lite/OpaqueOutline");
             ltslco      = Shader.Find("Hidden/" + shaderName + "/Lite/CutoutOutline");
             ltslto      = Shader.Find("Hidden/" + shaderName + "/Lite/TransparentOutline");
             ltsloto     = Shader.Find("Hidden/" + shaderName + "/Lite/OnePassTransparentOutline");
             ltsltto     = Shader.Find("Hidden/" + shaderName + "/Lite/TwoPassTransparentOutline");
+
+            ltsref      = Shader.Find("Hidden/" + shaderName + "/Refraction");
+            ltsrefb     = Shader.Find("Hidden/" + shaderName + "/RefractionBlur");
+            ltsfur      = Shader.Find("Hidden/" + shaderName + "/Fur");
+            ltsfurc     = Shader.Find("Hidden/" + shaderName + "/FurCutout");
+            ltsfurtwo   = Shader.Find("Hidden/" + shaderName + "/FurTwoPass");
+            ltsfuro     = Shader.Find(shaderName + "/[Optional] FurOnly/Transparent");
+            ltsfuroc    = Shader.Find(shaderName + "/[Optional] FurOnly/Cutout");
+            ltsfurotwo  = Shader.Find(shaderName + "/[Optional] FurOnly/TwoPass");
+            ltsgem      = Shader.Find("Hidden/" + shaderName + "/Gem");
+            ltsfs       = Shader.Find(shaderName + "/[Optional] FakeShadow");
+
+            ltsover     = Shader.Find(shaderName + "/[Optional] Overlay");
+            ltsoover    = Shader.Find(shaderName + "/[Optional] OverlayOnePass");
+            ltslover    = Shader.Find(shaderName + "/[Optional] LiteOverlay");
+            ltsloover   = Shader.Find(shaderName + "/[Optional] LiteOverlayOnePass");
+
+            ltsm        = Shader.Find(shaderName + "/lilToonMulti");
+            ltsmo       = Shader.Find("Hidden/" + shaderName + "/MultiOutline");
+            ltsmref     = Shader.Find("Hidden/" + shaderName + "/MultiRefraction");
+            ltsmfur     = Shader.Find("Hidden/" + shaderName + "/MultiFur");
+            ltsmgem     = Shader.Find("Hidden/" + shaderName + "/MultiGem");
         }
+
+        // You can create a menu like this
+        /*
+        [MenuItem("Assets/TemplateFull/Convert material to custom shader", false, 1100)]
+        private static void ConvertMaterialToCustomShaderMenu()
+        {
+            if(Selection.objects.Length == 0) return;
+            TemplateFullInspector inspector = new TemplateFullInspector();
+            for(int i = 0; i < Selection.objects.Length; i++)
+            {
+                if(Selection.objects[i] is Material)
+                {
+                    inspector.ConvertMaterialToCustomShader((Material)Selection.objects[i]);
+                }
+            }
+        }
+        */
     }
 }
-
 #endif

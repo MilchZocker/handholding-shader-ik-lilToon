@@ -29,7 +29,8 @@
 			#pragma geometry geom
 
 			#include "UnityCG.cginc"
-			#include "../HaiHandholdingShaderIK/HaiHandholdingShaderIK.cginc"
+			// Use project-rooted path so the include resolves regardless of shader asset relocation
+			#include "Assets\HandHolding\handholding-shader-ik-master\Assets\HaiHandholdingShaderIK\HaiHandholdingShaderIK.cginc"
 
 			struct appdata
 			{

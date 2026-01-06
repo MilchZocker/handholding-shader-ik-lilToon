@@ -1,14 +1,14 @@
-Shader "*LIL_SHADER_NAME*/lilToonLite"
+Shader "Hidden/*LIL_SHADER_NAME*/Lite/Cutout"
 {
     Properties
     {
         lilProperties "DefaultLite"
-        lilProperties "DefaultOpaque"
+        lilProperties "DefaultCutout"
         lilProperties "lilCustomShaderProperties.lilblock"
     }
 
-    lilPassShaderName "Hidden/*LIL_SHADER_NAME*/ltspass_lite_opaque"
-    lilSubShaderTags {"RenderType" = "Opaque" "Queue" = "Geometry"}
+    lilPassShaderName "Hidden/*LIL_SHADER_NAME*/ltspass_lite_cutout"
+    lilSubShaderTags {"RenderType" = "TransparentCutout" "Queue" = "AlphaTest"}
     lilSubShaderBRP "DefaultUsePass"
     lilSubShaderURP "DefaultUsePass"
     lilSubShaderHDRP "DefaultUsePass"

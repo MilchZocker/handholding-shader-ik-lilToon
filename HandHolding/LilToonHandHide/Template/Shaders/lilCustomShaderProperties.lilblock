@@ -1,4 +1,5 @@
-//----------------------------------------------------------------------------------------------------------------------
-// Handholding Shader IK - Hide Arm
-_EnableFakeArm ("Enable Fake right arm (for gesture animation)", Float) = 1
-_EnableFakeLeftArm ("Enable Fake left arm (for gesture animation)", Float) = 0
+
+        //----------------------------------------------------------------------------------------------------------------------
+        // Custom Properties - Handholding Shader IK (Arm Hide)
+        _EnableFakeArm ("Enable Fake right arm (for use with gesture animation)", Float) = 0
+        _EnableFakeLeftArm ("Enable Fake left arm (for use with gesture animation)", Float) = 0

@@ -1,4 +1,4 @@
-Shader "Hidden/*LIL_SHADER_NAME*/ltspass_opaque"
+Shader "Hidden/*LIL_SHADER_NAME*/ltspass_lite_opaque"
 {
     HLSLINCLUDE
         //----------------------------------------------------------------------------------------------------------------------
@@ -14,9 +14,9 @@ Shader "Hidden/*LIL_SHADER_NAME*/ltspass_opaque"
     ENDHLSL
 
     lilSubShaderInsert "lilCustomShaderInsert.lilblock"
-    lilSubShaderBRP "Default"
-    lilSubShaderURP "Default"
-    lilSubShaderHDRP "Default"
+    lilSubShaderBRP "DefaultLite"
+    lilSubShaderURP "DefaultLite"
+    lilSubShaderHDRP "DefaultLite"
 
     CustomEditor "*LIL_EDITOR_NAME*"
 }

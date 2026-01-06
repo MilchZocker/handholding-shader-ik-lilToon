@@ -1,4 +1,4 @@
-Shader "Hidden/*LIL_SHADER_NAME*/ltspass_opaque"
+Shader "Hidden/*LIL_SHADER_NAME*/ltspass_cutout"
 {
     HLSLINCLUDE
         //----------------------------------------------------------------------------------------------------------------------
@@ -8,8 +8,9 @@ Shader "Hidden/*LIL_SHADER_NAME*/ltspass_opaque"
         // 0 : Opaque
         // 1 : Cutout
         // 2 : Transparent
-        #define LIL_RENDER 0
+        #define LIL_RENDER 1
 
+        #include "custom_insert.hlsl"
         #include "custom.hlsl"
     ENDHLSL
 
